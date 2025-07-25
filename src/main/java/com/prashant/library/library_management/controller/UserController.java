@@ -1,12 +1,20 @@
 package com.prashant.library.library_management.controller;
 
 
+import com.prashant.library.library_management.dto.UserPatchRequestDTO;
 import com.prashant.library.library_management.dto.UserRequestDTO;
 import com.prashant.library.library_management.dto.UserResponseDTO;
+import com.prashant.library.library_management.entity.Role;
 import com.prashant.library.library_management.entity.User;
 import com.prashant.library.library_management.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +50,66 @@ public class UserController {
         List<UserResponseDTO> l = userService.getAllUsers();
         return new ResponseEntity<List<UserResponseDTO>>(l,HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id , @RequestBody @Valid UserRequestDTO request)
+    {
+        UserResponseDTO dto = userService.updateUser(id,request);
+
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> patchUser(@PathVariable Long id, @RequestBody UserPatchRequestDTO request) {
+        UserResponseDTO dto = userService.patchUser(id, request);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable long id)
+    {
+        userService.deleteUser(id);
+        return  ResponseEntity.ok("User Deleted Successfully");
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email)
+    {
+        UserResponseDTO dto = userService.getUserByEmail(email);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
+    @GetMapping("/role/{roleName}")
+    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable Role roleName)
+    {
+        UserResponseDTO dto = userService.getUserByRole(roleName);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserResponseDTO>> getUserByName(@RequestParam String name)
+    {
+        List<UserResponseDTO> dto = userService.getUsersByName(name);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<UserResponseDTO>> getAllUsersPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sort)
+    {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sort));
+        System.out.println(pageable);
+        Page<UserResponseDTO> result = userService.getUsersPaginated(pageable);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+
+    }
+
+
+
+
+
+
+
 
 
 

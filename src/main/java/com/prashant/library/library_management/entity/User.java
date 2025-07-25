@@ -27,6 +27,10 @@ public class User {
     private Role role;
 
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private SeatBooking seatBooking;
+
+
     private LocalDate registrationDate;
     private boolean feesPaid;
     private boolean isActive;

@@ -1,5 +1,6 @@
 package com.prashant.library.library_management.exceptions;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,5 +46,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDuplicateEmailRegistration(DuplicateEmailException ex)
     {
         return new ResponseEntity<>("Duplicate:" + ex.getMessage(),HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AllSeatsBookException.class)
+    public ResponseEntity<String> handleAllSeatsBookException(AllSeatsBookException ex)
+    {
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyBookedException.class)
+    public ResponseEntity<String> handleuserAlreadyBookedException(UserAlreadyBookedException ex)
+    {
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.CONFLICT);
     }
 }
