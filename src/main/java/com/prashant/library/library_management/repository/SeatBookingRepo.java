@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface SeatBookingRepo extends JpaRepository<SeatBooking,Long> {
 
     boolean existsByUserId(Long userId);
-    Optional<SeatBooking> findByUserId(Long userId);
+    SeatBooking findByUserId(Long userId);
     boolean existsBySeatNumber(String seatNumber);
     long count();
 
