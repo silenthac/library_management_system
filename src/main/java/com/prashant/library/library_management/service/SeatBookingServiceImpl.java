@@ -11,10 +11,16 @@ import com.prashant.library.library_management.exceptions.UserAlreadyBookedExcep
 import com.prashant.library.library_management.repository.SeatBookingRepo;
 import com.prashant.library.library_management.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -77,7 +83,55 @@ public  class SeatBookingServiceImpl  {
     }
 
 
-    private String generateAvailableSeat()
+    public List<SeatBookingResponseDTO>getAllBooking()
+    {
+        List<SeatBooking>  seatBookings = bookingRepo.findAll();
+
+      List<SeatBookingResponseDTO> result =   seatBookings.stream().map(this::mapToDTO).toList();
+
+      return result;
+
+    }
+
+    public SeatBookingResponseDTO getUserBooking(@PathVariable Long id)
+    {
+        SeatBooking booking = bookingRepo.findByUserId(id);
+        if (booking == null) {
+            throw new ResourceNotFoundException("Booking not found with this User " + id);
+        }
+        SeatBookingResponseDTO response = mapToDTO(booking);
+        return response;
+
+    }
+
+    public void leaveSeat(@PathVariable Long id)
+    {
+        User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
+        SeatBooking booking = bookingRepo.findByUserId(id);
+        if (booking == null) {
+            throw new ResourceNotFoundException("Booking not found with this User " + id);
+        }
+
+        user.setSeatBooking(null);
+        userRepo.save(user);
+        bookingRepo.delete(booking);
+
+
+    }
+
+    public long CountSeatBooked()
+    {
+         return bookingRepo.count();
+    }
+
+
+
+
+
+
+
+
+    private  String generateAvailableSeat()
     {
         String result = "";
         Set<String> taken = bookingRepo.findAll().stream().map(SeatBooking::getSeatNumber).collect(Collectors.toSet());
@@ -110,6 +164,27 @@ public  class SeatBookingServiceImpl  {
         responseDTO.setBookedAt(booking.getBookedAt());
         responseDTO.setUserName(booking.getUser().getFullName());
         return responseDTO;
+
+    }
+
+    public  List<String> generateAllAvailableSeat()
+    {
+        List<String> result = new ArrayList<>();
+        Set<String> taken = bookingRepo.findAll().stream().map(SeatBooking::getSeatNumber).collect(Collectors.toSet());
+
+        for(int i = 1;i<=TOTAL_SEATS;i++)
+        {
+            String seat = "S"+i;
+            if(!taken.contains(seat))
+            {
+                result.add(seat);
+
+            }
+        }
+
+
+
+        return result;
 
     }
 }

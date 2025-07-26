@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface SeatBookingService {
     SeatBookingResponseDTO bookSeat(SeatBookingRequestDTO dto);
-    void leaveSeat(long userId);
+    void leaveSeat(Long userId);
     List<String> getAvailableSeats();
     Optional<SeatBookingResponseDTO> gerUserBooking(Long userId);
     List<SeatBookingResponseDTO> getAllBooking();
