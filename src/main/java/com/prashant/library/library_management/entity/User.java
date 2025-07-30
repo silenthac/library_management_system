@@ -27,17 +27,18 @@
         private Role role;
 
 
-        public SeatBooking getSeatBooking() {
-            return seatBooking;
+
+
+        @OneToOne(mappedBy = "bookedBy", cascade = CascadeType.ALL)
+        private Seat seat;
+
+        public Seat getSeat() {
+            return seat;
         }
 
-        public void setSeatBooking(SeatBooking seatBooking) {
-            this.seatBooking = seatBooking;
+        public void setSeat(Seat seat) {
+            this.seat = seat;
         }
-
-        @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-        private SeatBooking seatBooking;
-
 
         private LocalDate registrationDate;
         private boolean feesPaid;

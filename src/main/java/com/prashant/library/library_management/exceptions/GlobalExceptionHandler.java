@@ -59,4 +59,18 @@ public class GlobalExceptionHandler {
     {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(UserAlreadyBookedSeatException.class)
+    public ResponseEntity<String> handleUserAlreadyBookedSeatException(UserAlreadyBookedSeatException ex)
+    {
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(SeatAlreadyBookedException.class)
+        public ResponseEntity<String> handleSeatAlreadyBookedException(SeatAlreadyBookedException ex)
+        {
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.CONFLICT);
+        }
+
+
 }

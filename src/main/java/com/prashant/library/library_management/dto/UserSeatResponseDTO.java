@@ -3,29 +3,10 @@ package com.prashant.library.library_management.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class SeatBookingResponseDTO {
-
+public class UserSeatResponseDTO {
+    private Long userId;
     private String seatNumber;
     private LocalDate bookedAt;
-    private boolean isBooked;
-
-    public UserSummaryDTO getBookedBy() {
-        return bookedBy;
-    }
-
-    public void setBookedBy(UserSummaryDTO bookedBy) {
-        this.bookedBy = bookedBy;
-    }
-
-    private UserSummaryDTO bookedBy;
-
-    public boolean isBooked() {
-        return isBooked;
-    }
-
-    public void setBooked(boolean booked) {
-        isBooked = booked;
-    }
 
     public String getSeatNumber() {
         return seatNumber;
@@ -35,7 +16,13 @@ public class SeatBookingResponseDTO {
         this.seatNumber = seatNumber;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public LocalDate getBookedAt() {
         return bookedAt;
@@ -44,4 +31,6 @@ public class SeatBookingResponseDTO {
     public void setBookedAt(LocalDate bookedAt) {
         this.bookedAt = bookedAt;
     }
+
+
 }
