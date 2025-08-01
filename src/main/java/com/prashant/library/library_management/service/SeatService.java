@@ -106,14 +106,17 @@ public class SeatService {
     public SeatBookingResponseDTO bookSeat(SeatBookingRequestDTO dto )
     {
         // Step 1: Fetch the user
+
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // Step 2: Fetch the seat
+
         Seat seat = seatRepo.findBySeatNumber(dto.getSeatNumber())
                 .orElseThrow(() -> new ResourceNotFoundException("Seat not found"));
 
         // Step 3: Check if seat is already booked
+
         if (seat.isBooked()) {
             throw new SeatAlreadyBookedException("Seat is already booked");
         }
